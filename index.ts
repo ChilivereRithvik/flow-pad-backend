@@ -21,7 +21,7 @@ app.use(
   })
 );
 
-app.all("/api/auth/*", toNodeHandler(auth));
+app.all("/api/auth/*path", toNodeHandler(auth));
 
 app.get("/", (req, res) => {
   res.json({ status: "alive", message: "FlowPad Backend" });
@@ -30,5 +30,15 @@ app.get("/", (req, res) => {
 app.get("/api", (req, res) => {
   res.send("🤑 I am alive!");
 });
+
+if (
+  process.env.NODE_ENV !== "production" ||
+  process.argv[1].endsWith("index.ts")
+) {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+  });
+}
 
 export default app;
